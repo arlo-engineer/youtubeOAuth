@@ -14,7 +14,7 @@ $client = new Google_Client();
 $client->setClientId($client_id);
 $client->setClientSecret($client_secret);
 $client->setRedirectUri($redirect_uri);
-$client->addScope("https://www.googleapis.com/auth/youtube");
+$client->setScopes(['https://www.googleapis.com/auth/youtube.readonly']);
 
 // アクセストークンが設定されていない場合、認証URLを生成
 if (! isset($_GET['code'])) {
@@ -27,7 +27,7 @@ $access_token = $client->getAccessToken();
 
 // YouTube Data APIにリクエストを送信
 $youtube = new Google_Service_YouTube($client);
-$response = $youtube->channels->listChannels("snippet,contentDetails,statistics", array("mine" => "true"));
+$response = $youtube->subscriptions->listSubscriptions('snippet,contentDetails', array("mine" => "true"));
 
 // 結果を表示
 print_r($response);
