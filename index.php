@@ -27,8 +27,15 @@ $access_token = $client->getAccessToken();
 
 // YouTube Data APIにリクエストを送信
 $youtube = new Google_Service_YouTube($client);
-$response = $youtube->subscriptions->listSubscriptions('snippet,contentDetails', array("mine" => "true"));
+$response = $youtube->subscriptions->listSubscriptions('snippet,contentDetails,subscriberSnippet', array("mine" => "true"));
 
-// 結果を表示
-print_r($response);
+// 登録チャンネル名を取得
+foreach ($response['items'] as $result) {
+    $titles = $result['snippet']['title'];
+    echo '<pre>';
+    echo $titles;
+    echo '<pre>';
+}
+
 };
+
