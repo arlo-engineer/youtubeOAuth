@@ -4,8 +4,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 session_start();
 
 // クライアントIDと秘密鍵を設定
-$client_id = "999582628275-jdbma12tpptu3bja12v1o408j98qo156.apps.googleusercontent.com";
-$client_secret = "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";
+$client_id = getenv('CLIENT_ID');
+$client_secret = getenv('CLIENT_SECRET');
 
 // リダイレクトURIを設定
 $redirect_uri = "http://localhost:8888/youtubeOAuth";
@@ -38,7 +38,7 @@ header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 
     // YouTube Data APIにリクエストを送信
     $youtube = new Google_Service_YouTube($client);
-    $response = $youtube->subscriptions->listSubscriptions('snippet,contentDetails,subscriberSnippet', array("mine" => "true"));
+    $response = $youtube->subscriptions->listSubscriptions('snippet,contentDetails,subscriberSnippet', ["mine" => "true", 'maxResults' => 50]);
 
     // 登録チャンネル名を表示
     foreach ($response['items'] as $result) {
@@ -47,4 +47,8 @@ header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         echo $titles;
         echo '<pre>';
     }
+
+    echo '<pre>';
+        var_dump($response);
+        echo '<pre>';
 }
